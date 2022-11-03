@@ -9,11 +9,11 @@
 /[Bb]uilds/
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
-/[Aa]ssets/[Aa]nimations/
 /[Aa]ssets/[Mm]odels
 /[Pp]rojectSettings/
 .idea
-
+*.fbx
+*.fbx.meta
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
