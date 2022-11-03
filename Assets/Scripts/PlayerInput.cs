@@ -44,6 +44,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Look"",
+                    ""type"": ""Value"",
+                    ""id"": ""e950b022-7aca-41e4-a5f0-ad356a818ab4"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -112,6 +121,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Dodge"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""523e8810-dcd0-4608-bfaf-0f0cfa3a18fc"",
+                    ""path"": ""<Pointer>/delta"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Look"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -122,6 +142,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_MovementActionMap = asset.FindActionMap("MovementActionMap", throwIfNotFound: true);
         m_MovementActionMap_MovementAction = m_MovementActionMap.FindAction("MovementAction", throwIfNotFound: true);
         m_MovementActionMap_Dodge = m_MovementActionMap.FindAction("Dodge", throwIfNotFound: true);
+        m_MovementActionMap_Look = m_MovementActionMap.FindAction("Look", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -183,12 +204,14 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private IMovementActionMapActions m_MovementActionMapActionsCallbackInterface;
     private readonly InputAction m_MovementActionMap_MovementAction;
     private readonly InputAction m_MovementActionMap_Dodge;
+    private readonly InputAction m_MovementActionMap_Look;
     public struct MovementActionMapActions
     {
         private @PlayerInput m_Wrapper;
         public MovementActionMapActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @MovementAction => m_Wrapper.m_MovementActionMap_MovementAction;
         public InputAction @Dodge => m_Wrapper.m_MovementActionMap_Dodge;
+        public InputAction @Look => m_Wrapper.m_MovementActionMap_Look;
         public InputActionMap Get() { return m_Wrapper.m_MovementActionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -204,6 +227,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Dodge.started -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnDodge;
                 @Dodge.performed -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnDodge;
                 @Dodge.canceled -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnDodge;
+                @Look.started -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnLook;
             }
             m_Wrapper.m_MovementActionMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -214,6 +240,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Dodge.started += instance.OnDodge;
                 @Dodge.performed += instance.OnDodge;
                 @Dodge.canceled += instance.OnDodge;
+                @Look.started += instance.OnLook;
+                @Look.performed += instance.OnLook;
+                @Look.canceled += instance.OnLook;
             }
         }
     }
@@ -222,5 +251,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     {
         void OnMovementAction(InputAction.CallbackContext context);
         void OnDodge(InputAction.CallbackContext context);
+        void OnLook(InputAction.CallbackContext context);
     }
 }

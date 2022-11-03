@@ -49,12 +49,12 @@ namespace PlayerStateMachine
             positionToLookAt.x = _ctx.MoveDirection.x;
             positionToLookAt.y = 0f;
             positionToLookAt.z = _ctx.MoveDirection.z;
-            Quaternion curRotation = _ctx.transform.rotation;
-            if (_ctx.InputSystem.IsMoving)
-            {
-                Quaternion rotate = Quaternion.LookRotation(positionToLookAt);
-                _ctx.transform.rotation = Quaternion.Slerp(curRotation, rotate, _ctx.RotationSpeed * Time.deltaTime);
-            }
+            Quaternion curRotation = _ctx.PlayerToRotate.rotation;
+             if (_ctx.InputSystem.IsMoving)
+             {
+                 Quaternion rotate = Quaternion.LookRotation(positionToLookAt);
+                 _ctx.PlayerToRotate.rotation = Quaternion.Slerp(curRotation, rotate, _ctx.RotationSpeed * Time.deltaTime);
+             }
         }
     }
 }
