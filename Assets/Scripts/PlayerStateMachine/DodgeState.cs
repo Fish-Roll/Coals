@@ -8,7 +8,7 @@ namespace PlayerStateMachine
 
         public override void EnterState()
         {
-            _ctx.Animator.SetBool(_ctx.MoveHash, false);
+            _ctx.Animator.SetBool(_ctx.WalkHash, false);
             _ctx.Animator.SetBool(_ctx.DodgeHash, true);
         }
 
@@ -19,9 +19,9 @@ namespace PlayerStateMachine
 
         public override void CheckSwitchState()
         {
-            if(_ctx.InputSystem.IsMoving && !_ctx.InputSystem.IsDodging)
-                SwitchState(_playerStateFactory.Move());
-            else if(!_ctx.InputSystem.IsMoving && !_ctx.InputSystem.IsDodging)
+            if(_ctx.InputSystem.IsWalking && !_ctx.InputSystem.IsDodging)
+                SwitchState(_playerStateFactory.Walk());
+            else if(!_ctx.InputSystem.IsWalking && !_ctx.InputSystem.IsDodging)
                 SwitchState(_playerStateFactory.Idle());
         }
 

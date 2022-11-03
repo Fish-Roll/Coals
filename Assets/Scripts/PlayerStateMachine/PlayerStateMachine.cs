@@ -8,7 +8,8 @@ namespace PlayerStateMachine
     {
         public InputSystem InputSystem { get; private set; }
         public Rigidbody Rb { get; private set; }
-        [field: SerializeField] public float MoveSpeed { get; set; }
+        [field: SerializeField] public float WalkSpeed { get; set; }
+        [field: SerializeField] public float RunSpeed { get; set; }
         [field: SerializeField] public float RotationSpeed { get; set; }
         [field: SerializeField] public Animator Animator { get; private set; }
         [SerializeField] private GameObject objectToRotation;
@@ -17,7 +18,8 @@ namespace PlayerStateMachine
         public PlayerBaseState CurrentState { get; set; }
         public PlayerStateFactory PlayerStateFactory { get; set; }
         public Vector3 MoveDirection { get; set; }
-        public int MoveHash { get; private set; }
+        public int WalkHash { get; private set; }
+        public int RunHash { get; private set; }
         public int DodgeHash { get; private set; }
         public int DeathHash { get; private set; }
         private void Awake()
@@ -26,7 +28,8 @@ namespace PlayerStateMachine
             InputSystem = GetComponent<InputSystem>();
             Rb.freezeRotation = true;
 
-            MoveHash = Animator.StringToHash("isMove");
+            WalkHash = Animator.StringToHash("isWalk");
+            RunHash = Animator.StringToHash("isRun");
             DodgeHash = Animator.StringToHash("isDodge");
             DeathHash = Animator.StringToHash("isDeath");
             
@@ -38,17 +41,13 @@ namespace PlayerStateMachine
         private void Update()
         {
             RotateCamera();
+            RotatePlayer();
             MoveDirection = InputSystem._inputMoveDirection;
             MoveDirection = InputSystem.ConvertToCameraMovement(MoveDirection);
         }
-
-        private void LateUpdate()
-        {
-            
-        }
-
         private void FixedUpdate()
         {
+            //Debug.Log(CurrentState.GetType() + " " + Animator.GetBool(RunHash));
             CurrentState.Updates();
         }
         public void RotateCamera()
@@ -69,12 +68,24 @@ namespace PlayerStateMachine
             }
             objectToRotation.transform.localEulerAngles = angles;
 
-            if (InputSystem.IsMoving)
+            if (InputSystem.IsWalking)
             {
                 transform.rotation = Quaternion.Euler(0, objectToRotation.transform.rotation.eulerAngles.y, 0);
                 objectToRotation.transform.localEulerAngles = new Vector3(angles.x, 0, 0);
             }
         }
-
+        private void RotatePlayer()
+        {
+            Vector3 positionToLookAt;
+            positionToLookAt.x = MoveDirection.x;
+            positionToLookAt.y = 0f;
+            positionToLookAt.z = MoveDirection.z;
+            Quaternion curRotation = PlayerToRotate.rotation;
+            if (InputSystem.IsWalking)
+            {
+                Quaternion rotate = Quaternion.LookRotation(positionToLookAt);
+                PlayerToRotate.rotation = Quaternion.Slerp(curRotation, rotate, RotationSpeed * Time.deltaTime);
+            }
+        }
     }
 }

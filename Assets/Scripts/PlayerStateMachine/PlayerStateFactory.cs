@@ -17,9 +17,13 @@ namespace PlayerStateMachine
             return new DodgeState(_ctx, this);
         }
 
-        public PlayerBaseState Move()
+        public PlayerBaseState Walk()
         {
-            return new MoveState(_ctx, this);
+            return new WalkState(_ctx, this);
+        }
+        public PlayerBaseState Run()
+        {
+            return new RunState(_ctx, this);
         }
 
         public PlayerBaseState Grounded()

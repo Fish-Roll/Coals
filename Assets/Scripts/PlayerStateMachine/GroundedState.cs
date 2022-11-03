@@ -31,10 +31,12 @@ namespace PlayerStateMachine
 
         public override void InitSubState()
         {
-            if(_ctx.InputSystem.IsMoving)
-                SetSubState(_playerStateFactory.Move());
-            else if(_ctx.InputSystem.IsDodging)
+            if(_ctx.InputSystem.IsDodging)
                 SetSubState(_playerStateFactory.Dodge());
+            else if(_ctx.InputSystem.IsWalking && _ctx.InputSystem.IsRunning)
+                SetSubState(_playerStateFactory.Run());
+            else if(_ctx.InputSystem.IsWalking)
+                SetSubState(_playerStateFactory.Walk());
             else
                 SetSubState(_playerStateFactory.Idle());
         }

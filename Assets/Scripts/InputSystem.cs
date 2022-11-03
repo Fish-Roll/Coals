@@ -8,7 +8,8 @@ public class InputSystem : MonoBehaviour
     public Vector2 _look;
     public Vector3 _inputMoveDirection;
     private Camera _camera;
-    public bool IsMoving { get; set; }
+    [field: SerializeField] public bool IsWalking { get; set; }
+    [field: SerializeField] public bool IsRunning { get; set; }
     [field: SerializeField] public bool IsDodging { get; set; }
 
     private void Awake()
@@ -20,17 +21,21 @@ public class InputSystem : MonoBehaviour
         if (_playerInput == null)
         {
             _playerInput = new PlayerInput();
-            _playerInput.MovementActionMap.MovementAction.performed += context =>
+            _playerInput.MovementActionMap.Walk.performed += context =>
             {
                 _readMoveDirection = context.ReadValue<Vector2>();
-                IsMoving = _readMoveDirection.x != 0 || _readMoveDirection.y != 0;
+                IsWalking = _readMoveDirection.x != 0 || _readMoveDirection.y != 0;
                 _inputMoveDirection.x = _readMoveDirection.x;
                 _inputMoveDirection.y = 0;
                 _inputMoveDirection.z = _readMoveDirection.y;
             };
+            _playerInput.MovementActionMap.Run.performed += context =>
+            {
+                IsRunning = context.ReadValueAsButton();
+            };
             _playerInput.MovementActionMap.Dodge.performed += context =>
             {
-                IsDodging = true;
+                IsDodging = context.ReadValueAsButton();
             };
             _playerInput.MovementActionMap.Look.started += context =>
             {
@@ -45,13 +50,15 @@ public class InputSystem : MonoBehaviour
                 _look = context.ReadValue<Vector2>();
             };
         }
-        _playerInput.MovementActionMap.MovementAction.Enable();
+        _playerInput.MovementActionMap.Walk.Enable();
+        _playerInput.MovementActionMap.Run.Enable();
         _playerInput.MovementActionMap.Dodge.Enable();
         _playerInput.MovementActionMap.Look.Enable();
     }
     private void OnDisable()
     {
-        _playerInput.MovementActionMap.MovementAction.Disable();
+        _playerInput.MovementActionMap.Walk.Disable();
+        _playerInput.MovementActionMap.Run.Disable();
         _playerInput.MovementActionMap.Dodge.Disable();
         _playerInput.MovementActionMap.Look.Disable();
     }
