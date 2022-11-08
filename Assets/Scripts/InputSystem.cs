@@ -5,12 +5,13 @@ public class InputSystem : MonoBehaviour
 {
     private PlayerInput _playerInput;
     private Vector2 _readMoveDirection;
+    private Camera _camera;
+    
     public Vector2 _look;
     public Vector3 _inputMoveDirection;
-    private Camera _camera;
-    [field: SerializeField] public bool IsWalking { get; set; }
-    [field: SerializeField] public bool IsRunning { get; set; }
-    [field: SerializeField] public bool IsDodging { get; set; }
+    public bool IsWalking { get; set; }
+    public bool IsRunning { get; set; }
+    public bool IsDodging { get; set; }
 
     private void Awake()
     {

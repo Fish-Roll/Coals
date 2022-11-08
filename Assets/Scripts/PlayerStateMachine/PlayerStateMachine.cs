@@ -12,9 +12,9 @@ namespace PlayerStateMachine
         [field: SerializeField] public float RunSpeed { get; set; }
         [field: SerializeField] public float RotationSpeed { get; set; }
         [field: SerializeField] public Animator Animator { get; private set; }
+        [field: SerializeField] public Transform PlayerToRotate { get; set; }
         [SerializeField] private GameObject objectToRotation;
         [SerializeField] private float mouseSensitivity;
-        [field: SerializeField] public Transform PlayerToRotate { get; set; }
         public PlayerBaseState CurrentState { get; set; }
         public PlayerStateFactory PlayerStateFactory { get; set; }
         public Vector3 MoveDirection { get; set; }
@@ -47,7 +47,6 @@ namespace PlayerStateMachine
         }
         private void FixedUpdate()
         {
-            //Debug.Log(CurrentState.GetType() + " " + Animator.GetBool(RunHash));
             CurrentState.Updates();
         }
         public void RotateCamera()

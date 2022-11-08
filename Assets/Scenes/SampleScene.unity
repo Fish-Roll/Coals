@@ -1516,7 +1516,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 188cf6ec45a27874c80b064271d821c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <MoveSpeed>k__BackingField: 4
+  <WalkSpeed>k__BackingField: 4
+  <RunSpeed>k__BackingField: 15
   <RotationSpeed>k__BackingField: 10
   <Animator>k__BackingField: {fileID: 1118637987}
   objectToRotation: {fileID: 596394302}
@@ -1536,6 +1537,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _look: {x: 0, y: 0}
   _inputMoveDirection: {x: 0, y: 0, z: 0}
+  <IsWalking>k__BackingField: 0
+  <IsRunning>k__BackingField: 0
   <IsDodging>k__BackingField: 0
 --- !u!54 &183438086
 Rigidbody:
