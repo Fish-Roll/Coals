@@ -1,4 +1,4 @@
-using System;
+using PlayerStateMachine.States;
 using UnityEngine;
 
 namespace PlayerStateMachine
@@ -22,6 +22,7 @@ namespace PlayerStateMachine
         public int RunHash { get; private set; }
         public int DodgeHash { get; private set; }
         public int DeathHash { get; private set; }
+        public int InteractHash { get; private set; }
         private void Awake()
         {
             Rb = GetComponent<Rigidbody>();
@@ -31,6 +32,7 @@ namespace PlayerStateMachine
             WalkHash = Animator.StringToHash("isWalk");
             RunHash = Animator.StringToHash("isRun");
             DodgeHash = Animator.StringToHash("isDodge");
+            InteractHash = Animator.StringToHash("isInteract");
             DeathHash = Animator.StringToHash("isDeath");
             
             PlayerStateFactory = new PlayerStateFactory(this);

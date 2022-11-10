@@ -1,6 +1,4 @@
-using UnityEngine;
-
-namespace PlayerStateMachine
+namespace PlayerStateMachine.States
 {
     public class WalkState : PlayerBaseState
     {
@@ -13,6 +11,7 @@ namespace PlayerStateMachine
             _ctx.Animator.SetBool(_ctx.WalkHash, true);
             _ctx.Animator.SetBool(_ctx.RunHash, false);
             _ctx.Animator.SetBool(_ctx.DodgeHash, false);
+            _ctx.Animator.SetBool(_ctx.InteractHash, false);
         }
 
         public override void ExitState()
@@ -26,14 +25,16 @@ namespace PlayerStateMachine
                 SwitchState(_playerStateFactory.Dodge());
             else if(_ctx.InputSystem.IsRunning)
                 SwitchState(_playerStateFactory.Run());
+            else if(_ctx.InputSystem.CanInteract && _ctx.InputSystem.IsInteracting)
+                SwitchState(_playerStateFactory.Interact());
             else if(!_ctx.InputSystem.IsWalking)
                 SwitchState(_playerStateFactory.Idle());
         }
 
         public override void Update()
         {
-            CheckSwitchState();
             MovePlayer();
+            CheckSwitchState();
         }
 
         public override void InitSubState()

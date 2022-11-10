@@ -24,7 +24,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     ""name"": ""PlayerInput"",
     ""maps"": [
         {
-            ""name"": ""MovementActionMap"",
+            ""name"": ""PlayerActionMap"",
             ""id"": ""6e30af7d-9f46-49c7-8d4c-6c39f7102e88"",
             ""actions"": [
                 {
@@ -56,8 +56,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Dodge"",
-                    ""type"": ""Button"",
+                    ""type"": ""PassThrough"",
                     ""id"": ""cfd37527-a17c-48fb-becc-82422e6d5cca"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Interact"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""d436a955-cd91-43ff-babc-6e03cea4fe10"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -152,18 +161,30 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ed570406-e563-498d-b54a-439c5f18bf09"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
     ],
     ""controlSchemes"": []
 }");
-        // MovementActionMap
-        m_MovementActionMap = asset.FindActionMap("MovementActionMap", throwIfNotFound: true);
-        m_MovementActionMap_Look = m_MovementActionMap.FindAction("Look", throwIfNotFound: true);
-        m_MovementActionMap_Walk = m_MovementActionMap.FindAction("Walk", throwIfNotFound: true);
-        m_MovementActionMap_Run = m_MovementActionMap.FindAction("Run", throwIfNotFound: true);
-        m_MovementActionMap_Dodge = m_MovementActionMap.FindAction("Dodge", throwIfNotFound: true);
+        // PlayerActionMap
+        m_PlayerActionMap = asset.FindActionMap("PlayerActionMap", throwIfNotFound: true);
+        m_PlayerActionMap_Look = m_PlayerActionMap.FindAction("Look", throwIfNotFound: true);
+        m_PlayerActionMap_Walk = m_PlayerActionMap.FindAction("Walk", throwIfNotFound: true);
+        m_PlayerActionMap_Run = m_PlayerActionMap.FindAction("Run", throwIfNotFound: true);
+        m_PlayerActionMap_Dodge = m_PlayerActionMap.FindAction("Dodge", throwIfNotFound: true);
+        m_PlayerActionMap_Interact = m_PlayerActionMap.FindAction("Interact", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -220,44 +241,49 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // MovementActionMap
-    private readonly InputActionMap m_MovementActionMap;
-    private IMovementActionMapActions m_MovementActionMapActionsCallbackInterface;
-    private readonly InputAction m_MovementActionMap_Look;
-    private readonly InputAction m_MovementActionMap_Walk;
-    private readonly InputAction m_MovementActionMap_Run;
-    private readonly InputAction m_MovementActionMap_Dodge;
-    public struct MovementActionMapActions
+    // PlayerActionMap
+    private readonly InputActionMap m_PlayerActionMap;
+    private IPlayerActionMapActions m_PlayerActionMapActionsCallbackInterface;
+    private readonly InputAction m_PlayerActionMap_Look;
+    private readonly InputAction m_PlayerActionMap_Walk;
+    private readonly InputAction m_PlayerActionMap_Run;
+    private readonly InputAction m_PlayerActionMap_Dodge;
+    private readonly InputAction m_PlayerActionMap_Interact;
+    public struct PlayerActionMapActions
     {
         private @PlayerInput m_Wrapper;
-        public MovementActionMapActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Look => m_Wrapper.m_MovementActionMap_Look;
-        public InputAction @Walk => m_Wrapper.m_MovementActionMap_Walk;
-        public InputAction @Run => m_Wrapper.m_MovementActionMap_Run;
-        public InputAction @Dodge => m_Wrapper.m_MovementActionMap_Dodge;
-        public InputActionMap Get() { return m_Wrapper.m_MovementActionMap; }
+        public PlayerActionMapActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Look => m_Wrapper.m_PlayerActionMap_Look;
+        public InputAction @Walk => m_Wrapper.m_PlayerActionMap_Walk;
+        public InputAction @Run => m_Wrapper.m_PlayerActionMap_Run;
+        public InputAction @Dodge => m_Wrapper.m_PlayerActionMap_Dodge;
+        public InputAction @Interact => m_Wrapper.m_PlayerActionMap_Interact;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerActionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(MovementActionMapActions set) { return set.Get(); }
-        public void SetCallbacks(IMovementActionMapActions instance)
+        public static implicit operator InputActionMap(PlayerActionMapActions set) { return set.Get(); }
+        public void SetCallbacks(IPlayerActionMapActions instance)
         {
-            if (m_Wrapper.m_MovementActionMapActionsCallbackInterface != null)
+            if (m_Wrapper.m_PlayerActionMapActionsCallbackInterface != null)
             {
-                @Look.started -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnLook;
-                @Look.performed -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnLook;
-                @Look.canceled -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnLook;
-                @Walk.started -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnWalk;
-                @Walk.performed -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnWalk;
-                @Walk.canceled -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnWalk;
-                @Run.started -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnRun;
-                @Run.performed -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnRun;
-                @Run.canceled -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnRun;
-                @Dodge.started -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnDodge;
-                @Dodge.performed -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnDodge;
-                @Dodge.canceled -= m_Wrapper.m_MovementActionMapActionsCallbackInterface.OnDodge;
+                @Look.started -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnLook;
+                @Look.performed -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnLook;
+                @Look.canceled -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnLook;
+                @Walk.started -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnWalk;
+                @Walk.performed -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnWalk;
+                @Walk.canceled -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnWalk;
+                @Run.started -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnRun;
+                @Run.performed -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnRun;
+                @Run.canceled -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnRun;
+                @Dodge.started -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnDodge;
+                @Dodge.performed -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnDodge;
+                @Dodge.canceled -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnDodge;
+                @Interact.started -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnInteract;
+                @Interact.performed -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnInteract;
+                @Interact.canceled -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnInteract;
             }
-            m_Wrapper.m_MovementActionMapActionsCallbackInterface = instance;
+            m_Wrapper.m_PlayerActionMapActionsCallbackInterface = instance;
             if (instance != null)
             {
                 @Look.started += instance.OnLook;
@@ -272,15 +298,19 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Dodge.started += instance.OnDodge;
                 @Dodge.performed += instance.OnDodge;
                 @Dodge.canceled += instance.OnDodge;
+                @Interact.started += instance.OnInteract;
+                @Interact.performed += instance.OnInteract;
+                @Interact.canceled += instance.OnInteract;
             }
         }
     }
-    public MovementActionMapActions @MovementActionMap => new MovementActionMapActions(this);
-    public interface IMovementActionMapActions
+    public PlayerActionMapActions @PlayerActionMap => new PlayerActionMapActions(this);
+    public interface IPlayerActionMapActions
     {
         void OnLook(InputAction.CallbackContext context);
         void OnWalk(InputAction.CallbackContext context);
         void OnRun(InputAction.CallbackContext context);
         void OnDodge(InputAction.CallbackContext context);
+        void OnInteract(InputAction.CallbackContext context);
     }
 }

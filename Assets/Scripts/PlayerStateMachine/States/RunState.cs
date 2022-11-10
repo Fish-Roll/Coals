@@ -1,4 +1,4 @@
-﻿namespace PlayerStateMachine
+﻿namespace PlayerStateMachine.States
 {
     public class RunState : PlayerBaseState
     {
@@ -28,8 +28,8 @@
 
         public override void Update()
         {
-            CheckSwitchState();
             _ctx.Rb.velocity = _ctx.MoveDirection.normalized * _ctx.RunSpeed;
+            CheckSwitchState();
         }
 
         public override void InitSubState()

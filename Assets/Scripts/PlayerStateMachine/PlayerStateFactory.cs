@@ -1,3 +1,5 @@
+using PlayerStateMachine.States;
+
 namespace PlayerStateMachine
 {
     public class PlayerStateFactory
@@ -29,6 +31,11 @@ namespace PlayerStateMachine
         public PlayerBaseState Grounded()
         {
             return new GroundedState(_ctx, this);
+        }
+
+        public PlayerBaseState Interact()
+        {
+            return new InteractState(_ctx, this);
         }
     }
 }

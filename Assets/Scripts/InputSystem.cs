@@ -12,7 +12,8 @@ public class InputSystem : MonoBehaviour
     public bool IsWalking { get; set; }
     public bool IsRunning { get; set; }
     public bool IsDodging { get; set; }
-
+    [field: SerializeField]public bool IsInteracting { get; set; }
+    [field: SerializeField]public bool CanInteract { get; set; }
     private void Awake()
     {
         _camera = Camera.main;
@@ -22,7 +23,7 @@ public class InputSystem : MonoBehaviour
         if (_playerInput == null)
         {
             _playerInput = new PlayerInput();
-            _playerInput.MovementActionMap.Walk.performed += context =>
+            _playerInput.PlayerActionMap.Walk.performed += context =>
             {
                 _readMoveDirection = context.ReadValue<Vector2>();
                 IsWalking = _readMoveDirection.x != 0 || _readMoveDirection.y != 0;
@@ -30,38 +31,55 @@ public class InputSystem : MonoBehaviour
                 _inputMoveDirection.y = 0;
                 _inputMoveDirection.z = _readMoveDirection.y;
             };
-            _playerInput.MovementActionMap.Run.performed += context =>
+            _playerInput.PlayerActionMap.Run.performed += context =>
             {
                 IsRunning = context.ReadValueAsButton();
             };
-            _playerInput.MovementActionMap.Dodge.performed += context =>
+            _playerInput.PlayerActionMap.Dodge.performed += context =>
             {
                 IsDodging = context.ReadValueAsButton();
             };
-            _playerInput.MovementActionMap.Look.started += context =>
+            _playerInput.PlayerActionMap.Interact.performed += context =>
+            {
+                IsInteracting = context.ReadValueAsButton();
+            };
+            _playerInput.PlayerActionMap.Look.started += context =>
             {
                 _look = context.ReadValue<Vector2>();
             };
-            _playerInput.MovementActionMap.Look.performed += context =>
+            _playerInput.PlayerActionMap.Look.performed += context =>
             {
                 _look = context.ReadValue<Vector2>();
             };
-            _playerInput.MovementActionMap.Look.canceled += context =>
+            _playerInput.PlayerActionMap.Look.canceled += context =>
             {
                 _look = context.ReadValue<Vector2>();
             };
         }
-        _playerInput.MovementActionMap.Walk.Enable();
-        _playerInput.MovementActionMap.Run.Enable();
-        _playerInput.MovementActionMap.Dodge.Enable();
-        _playerInput.MovementActionMap.Look.Enable();
+        _playerInput.PlayerActionMap.Walk.Enable();
+        _playerInput.PlayerActionMap.Run.Enable();
+        _playerInput.PlayerActionMap.Interact.Enable();
+        _playerInput.PlayerActionMap.Dodge.Enable();
+        _playerInput.PlayerActionMap.Look.Enable();
     }
     private void OnDisable()
     {
-        _playerInput.MovementActionMap.Walk.Disable();
-        _playerInput.MovementActionMap.Run.Disable();
-        _playerInput.MovementActionMap.Dodge.Disable();
-        _playerInput.MovementActionMap.Look.Disable();
+        _playerInput.PlayerActionMap.Walk.Disable();
+        _playerInput.PlayerActionMap.Run.Disable();
+        _playerInput.PlayerActionMap.Interact.Disable();
+        _playerInput.PlayerActionMap.Dodge.Disable();
+        _playerInput.PlayerActionMap.Look.Disable();
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if(other.CompareTag("Item"))
+            CanInteract = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Item"))
+            CanInteract = false;
     }
 
     public Vector3 ConvertToCameraMovement(Vector3 moveDirection)
