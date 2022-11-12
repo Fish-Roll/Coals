@@ -28,7 +28,7 @@ namespace PlayerStateMachine
             Rb = GetComponent<Rigidbody>();
             InputSystem = GetComponent<InputSystem>();
             Rb.freezeRotation = true;
-
+            //Interact = GetComponent<PlayerInteract>();
             WalkHash = Animator.StringToHash("isWalk");
             RunHash = Animator.StringToHash("isRun");
             DodgeHash = Animator.StringToHash("isDodge");

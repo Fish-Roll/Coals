@@ -9,6 +9,7 @@
         public override void EnterState()
         {
             _ctx.Animator.SetBool(_ctx.InteractHash, true);
+            _ctx.InputSystem.Interact.Interact();
         }
 
         public override void ExitState()
@@ -37,6 +38,5 @@
         {
             
         }
-        
     }
 }

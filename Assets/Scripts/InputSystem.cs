@@ -1,4 +1,5 @@
 using System;
+using InteractWithWorld;
 using UnityEngine;
 
 public class InputSystem : MonoBehaviour
@@ -6,9 +7,9 @@ public class InputSystem : MonoBehaviour
     private PlayerInput _playerInput;
     private Vector2 _readMoveDirection;
     private Camera _camera;
-    
     public Vector2 _look;
     public Vector3 _inputMoveDirection;
+    public InteractableObject Interact { get; set; }
     public bool IsWalking { get; set; }
     public bool IsRunning { get; set; }
     public bool IsDodging { get; set; }
@@ -70,16 +71,22 @@ public class InputSystem : MonoBehaviour
         _playerInput.PlayerActionMap.Dodge.Disable();
         _playerInput.PlayerActionMap.Look.Disable();
     }
-    private void OnTriggerStay(Collider other)
+    private void OnCollisionStay(Collision other)
     {
-        if(other.CompareTag("Item"))
+        if (other.gameObject.CompareTag("Item"))
+        {
             CanInteract = true;
+            Interact = other.gameObject.GetComponent<InteractableObject>();
+        }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void OnCollisionExit(Collision other)
     {
-        if (other.CompareTag("Item"))
+        if (other.gameObject.CompareTag("Item"))
+        {
             CanInteract = false;
+            Interact = null;
+        }
     }
 
     public Vector3 ConvertToCameraMovement(Vector3 moveDirection)
