@@ -22,8 +22,6 @@ namespace PlayerStateMachine.States
         {
             if(_ctx.InputSystem.IsWalking)
                 SwitchState(_playerStateFactory.Walk());
-            else if(_ctx.InputSystem.IsDodging)
-                SwitchState(_playerStateFactory.Dodge());
             else if(_ctx.InputSystem.IsInteracting && _ctx.InputSystem.CanInteract)
                 SwitchState(_playerStateFactory.Interact());
         }
