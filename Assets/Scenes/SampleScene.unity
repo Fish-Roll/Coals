@@ -794,6 +794,7 @@ GameObject:
   - component: {fileID: 183438085}
   - component: {fileID: 183438084}
   - component: {fileID: 183438086}
+  - component: {fileID: 183438087}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -852,6 +853,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _look: {x: 0, y: 0}
   _inputMoveDirection: {x: 0, y: 0, z: 0}
+  <IsWalking>k__BackingField: 0
+  <IsDodging>k__BackingField: 0
   <IsInteracting>k__BackingField: 0
   <CanInteract>k__BackingField: 0
 --- !u!54 &183438086
@@ -870,6 +873,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!136 &183438087
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183438081}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.9
+  m_Height: 0
+  m_Direction: 1
+  m_Center: {x: 0, y: 1.1, z: 0}
 --- !u!1 &279952487
 GameObject:
   m_ObjectHideFlags: 0
@@ -4483,17 +4500,3 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
   m_PrefabInstance: {fileID: 1093747467}
   m_PrefabAsset: {fileID: 0}
---- !u!136 &8296172668130826755
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8296172668130826754}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 1
-  m_Height: 1
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}

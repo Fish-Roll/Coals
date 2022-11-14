@@ -10,11 +10,11 @@ public class InputSystem : MonoBehaviour
     public Vector2 _look;
     public Vector3 _inputMoveDirection;
     public InteractableObject Interact { get; set; }
-    [field: SerializeField]public bool IsWalking { get; set; }
+    public bool IsWalking { get; set; }
     public bool IsRunning { get; set; }
-    [field: SerializeField]public bool IsDodging { get; set; }
-    [field: SerializeField]public bool IsInteracting { get; set; }
-    [field: SerializeField]public bool CanInteract { get; set; }
+    public bool IsDodging { get; set; }
+    public bool IsInteracting { get; set; }
+    public bool CanInteract { get; set; }
     private void Awake()
     {
         _camera = Camera.main;
@@ -71,16 +71,16 @@ public class InputSystem : MonoBehaviour
         _playerInput.PlayerActionMap.Dodge.Disable();
         _playerInput.PlayerActionMap.Look.Disable();
     }
-    private void OnCollisionStay(Collision other)
+
+    private void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.CompareTag("Item"))
+        if (other.CompareTag("Item"))
         {
             CanInteract = true;
-            Interact = other.gameObject.GetComponent<InteractableObject>();
+            Interact = other.GetComponent<InteractableObject>();
         }
     }
-
-    private void OnCollisionExit(Collision other)
+    private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.CompareTag("Item"))
         {
