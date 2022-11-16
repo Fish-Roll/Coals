@@ -1,7 +1,4 @@
-using PlayerStateMachine.States;
-using UnityEngine;
-
-namespace PlayerStateMachine
+namespace Player.States
 {
     public class GroundedState: PlayerBaseState 
     {

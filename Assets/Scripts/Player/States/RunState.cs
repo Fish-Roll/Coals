@@ -1,4 +1,7 @@
-﻿namespace PlayerStateMachine.States
+﻿using Player;
+using Player.States;
+
+namespace Player.States
 {
     public class RunState : PlayerBaseState
     {

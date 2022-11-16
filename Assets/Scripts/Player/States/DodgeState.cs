@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-namespace PlayerStateMachine.States
+namespace Player.States
 {
     public class DodgeState : PlayerBaseState
     {

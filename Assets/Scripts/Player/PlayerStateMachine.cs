@@ -1,7 +1,7 @@
-using PlayerStateMachine.States;
+using Player.States;
 using UnityEngine;
 
-namespace PlayerStateMachine
+namespace Player
 {
     [RequireComponent(typeof(InputSystem))]
     public class PlayerStateMachine : MonoBehaviour

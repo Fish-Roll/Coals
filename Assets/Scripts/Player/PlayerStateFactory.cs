@@ -1,6 +1,5 @@
-using PlayerStateMachine.States;
-
-namespace PlayerStateMachine
+using Player.States;
+namespace Player
 {
     public class PlayerStateFactory
     {
