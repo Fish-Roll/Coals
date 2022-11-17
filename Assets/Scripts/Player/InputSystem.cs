@@ -1,5 +1,6 @@
 using InteractWithWorld;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Player
 {
@@ -27,54 +28,38 @@ namespace Player
             if (_playerInput == null)
             {
                 _playerInput = new PlayerInput();
-                _playerInput.PlayerActionMap.Walk.performed += context =>
-                {
-                    _readMoveDirection = context.ReadValue<Vector2>();
-                    IsWalking = _readMoveDirection.x != 0 || _readMoveDirection.y != 0;
-                    _inputMoveDirection.x = _readMoveDirection.x;
-                    _inputMoveDirection.y = 0;
-                    _inputMoveDirection.z = _readMoveDirection.y;
-                };
-                _playerInput.PlayerActionMap.Run.performed += context =>
-                {
-                    IsRunning = context.ReadValueAsButton();
-                };
-                _playerInput.PlayerActionMap.Dodge.performed += context =>
-                {
-                    IsDodging = context.ReadValueAsButton();
-                };
-                _playerInput.PlayerActionMap.Interact.performed += context =>
-                {
-                    IsInteracting = context.ReadValueAsButton();
-                };
-                _playerInput.PlayerActionMap.Look.started += context =>
-                {
-                    _look = context.ReadValue<Vector2>();
-                };
-                _playerInput.PlayerActionMap.Look.performed += context =>
-                {
-                    _look = context.ReadValue<Vector2>();
-                };
-                _playerInput.PlayerActionMap.Look.canceled += context =>
-                {
-                    _look = context.ReadValue<Vector2>();
-                };
+                _playerInput.PlayerActionMap.Walk.performed += OnWalk;
+                _playerInput.PlayerActionMap.Run.performed += OnRun;
+                _playerInput.PlayerActionMap.Dodge.performed += OnDodge;
+                _playerInput.PlayerActionMap.Interact.performed += OnInteract;
+                _playerInput.PlayerActionMap.Look.performed += OnLook;
+                _playerInput.PlayerActionMap.Look.canceled += OnLook;
             }
-            _playerInput.PlayerActionMap.Walk.Enable();
-            _playerInput.PlayerActionMap.Run.Enable();
-            _playerInput.PlayerActionMap.Interact.Enable();
-            _playerInput.PlayerActionMap.Dodge.Enable();
-            _playerInput.PlayerActionMap.Look.Enable();
+            _playerInput.Enable();
         }
         private void OnDisable()
         {
-            _playerInput.PlayerActionMap.Walk.Disable();
-            _playerInput.PlayerActionMap.Run.Disable();
-            _playerInput.PlayerActionMap.Interact.Disable();
-            _playerInput.PlayerActionMap.Dodge.Disable();
-            _playerInput.PlayerActionMap.Look.Disable();
+            _playerInput.Disable();
+            // if (!IsDead)
+            // {
+            //     _playerInput.PlayerActionMap.Walk.performed -= OnWalk;
+            //     _playerInput.PlayerActionMap.Run.performed -= OnRun;
+            //     _playerInput.PlayerActionMap.Dodge.performed -= OnDodge;
+            //     _playerInput.PlayerActionMap.Interact.performed -= OnInteract;
+            //     _playerInput.PlayerActionMap.Look.performed -= OnLook;
+            // }
         }
-
+        private void OnWalk(InputAction.CallbackContext context) {
+            _readMoveDirection = context.ReadValue<Vector2>();
+            IsWalking = _readMoveDirection.x != 0 || _readMoveDirection.y != 0;
+            _inputMoveDirection.x = _readMoveDirection.x;
+            _inputMoveDirection.y = 0;
+            _inputMoveDirection.z = _readMoveDirection.y;
+        }
+        private void OnRun(InputAction.CallbackContext context) => IsRunning = context.ReadValueAsButton();
+        private void OnDodge(InputAction.CallbackContext context) => IsDodging = context.ReadValueAsButton();
+        private void OnInteract(InputAction.CallbackContext context) => IsInteracting = context.ReadValueAsButton();
+        private void OnLook(InputAction.CallbackContext context) => _look = context.ReadValue<Vector2>();
         private void OnTriggerStay(Collider other)
         {
             if (other.CompareTag("Item"))
@@ -91,7 +76,6 @@ namespace Player
                 Interact = null;
             }
         }
-
         public Vector3 ConvertToCameraMovement(Vector3 moveDirection)
         {
             float yMoveValue = moveDirection.y;

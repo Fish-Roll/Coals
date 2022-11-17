@@ -13,7 +13,7 @@ namespace TestScripts
             if (other.CompareTag("Player"))
             {
                 _characteristics = other.GetComponent<PlayerCharacteristics>();
-                _characteristics.AddHealth(hp);
+                _characteristics.Damage(hp);
             }
         }
     }

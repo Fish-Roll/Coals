@@ -9,7 +9,7 @@ namespace InteractWithWorld
         private PlayerCharacteristics _characteristics;
         public override void Interact()
         {
-            _characteristics.AddHealth(health);
+            _characteristics.Heal(health);
             Destroy(this.gameObject);
         }
 

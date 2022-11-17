@@ -29,13 +29,14 @@ namespace Player
         {
             Rb = GetComponent<Rigidbody>();
             InputSystem = GetComponent<InputSystem>();
+            Characteristics = GetComponent<PlayerCharacteristics>();
+            
             Rb.freezeRotation = true;
             WalkHash = Animator.StringToHash("isWalk");
             RunHash = Animator.StringToHash("isRun");
             DodgeHash = Animator.StringToHash("isDodge");
             InteractHash = Animator.StringToHash("isInteract");
             DeathHash = Animator.StringToHash("isDeath");
-            
             PlayerStateFactory = new PlayerStateFactory(this);
             CurrentState = PlayerStateFactory.Grounded();
             CurrentState.EnterState();
@@ -50,6 +51,8 @@ namespace Player
         }
         private void FixedUpdate()
         {
+            if (Characteristics.Health == 0)
+                InputSystem.IsDead = true;
             CurrentState.Updates();
         }
         public void RotateCamera()

@@ -12,12 +12,17 @@
             _ctx.Animator.SetBool(_ctx.RunHash, false);
             _ctx.Animator.SetBool(_ctx.WalkHash, false);
             _ctx.Animator.SetBool(_ctx.DeathHash, true);
-            _ctx.enabled = false;
+            
+            _ctx.InputSystem.enabled = false;
+            _ctx.InputSystem.IsDodging = false;
+            _ctx.InputSystem.IsInteracting = false;
+            _ctx.InputSystem.IsRunning = false;
+            _ctx.InputSystem.IsWalking = false;
         }
 
         public override void ExitState()
         {
-            _ctx.enabled = true;
+            _ctx.InputSystem.enabled = true;
         }
 
         public override void CheckSwitchState()
@@ -28,6 +33,8 @@
 
         public override void Update()
         {
+            if (_ctx.Characteristics.Health > 0)
+                _ctx.InputSystem.IsDead = false;
             CheckSwitchState();
         }
 

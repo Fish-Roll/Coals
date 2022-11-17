@@ -1,20 +1,11 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Player
 {
     public class PlayerCharacteristics :MonoBehaviour
     {
-        [field: SerializeField]public float MaxHealth
-        {
-            get;
-            private set;
-        }
-        [field: SerializeField]public float Health
-        {
-            get;
-            private set;
-        }
+        [field: SerializeField]public float MaxHealth { get; private set; }
+        [field: SerializeField]public float Health { get; private set; }
         private PlayerStateMachine _ctx;
         private void Awake()
         {
@@ -28,19 +19,23 @@ namespace Player
             }
             MaxHealth += add;
         }
-
-        public void AddHealth(float add)
+        
+        public void Heal(float add)
         {
-            if (add < 0 && Mathf.Abs(add) > Health)
-                Health = 0;
-            else if (add + Health > MaxHealth)
+            float newHp = Health + add;
+            if (newHp > MaxHealth)
                 Health = MaxHealth;
             else
-                Health += add;
-            if (Health == 0)
-                _ctx.InputSystem.IsDead = true;
+                Health = newHp;
+        }
+
+        public void Damage(float dmg)
+        {
+            float newHp = Health - dmg;
+            if (newHp < 0)
+                Health = 0;
             else
-                _ctx.InputSystem.IsDead = false;
+                Health = newHp;
         }
     }
 }
