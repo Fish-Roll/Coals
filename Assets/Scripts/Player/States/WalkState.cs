@@ -21,7 +21,9 @@ namespace Player.States
 
         public override void CheckSwitchState()
         {
-            if(_ctx.InputSystem.IsDodging)
+            if(_ctx.InputSystem.IsDead)
+                SwitchState(_playerStateFactory.Death());
+            else if(_ctx.InputSystem.IsDodging)
                 SwitchState(_playerStateFactory.Dodge());
             else if(_ctx.InputSystem.IsRunning)
                 SwitchState(_playerStateFactory.Run());

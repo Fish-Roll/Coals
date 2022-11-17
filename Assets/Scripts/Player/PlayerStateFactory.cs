@@ -36,5 +36,10 @@ namespace Player
         {
             return new InteractState(_ctx, this);
         }
+
+        public PlayerBaseState Death()
+        {
+            return new DeathState(_ctx, this);
+        }
     }
 }

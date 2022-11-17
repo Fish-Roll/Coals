@@ -11,11 +11,13 @@ namespace Player
         public Vector2 _look;
         public Vector3 _inputMoveDirection;
         public InteractableObject Interact { get; set; }
+        [field: SerializeField] public bool IsDead { get; set; }
         [field: SerializeField] public bool IsWalking { get; set; }
         [field: SerializeField] public bool IsRunning { get; set; }
         [field: SerializeField] public bool IsDodging { get; set; }
         [field: SerializeField] public bool IsInteracting { get; set; }
         [field: SerializeField] public bool CanInteract { get; set; }
+        
         private void Awake()
         {
             _camera = Camera.main;

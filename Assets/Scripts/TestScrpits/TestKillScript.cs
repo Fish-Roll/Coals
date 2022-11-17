@@ -1,22 +1,20 @@
+using System;
 using Player;
 using UnityEngine;
 
-namespace InteractWithWorld
+namespace TestScripts
 {
-    public class ChangeHealth : InteractableObject
+    public class TestKillScript : MonoBehaviour
     {
-        [SerializeField] private float health;
+        public float hp;
         private PlayerCharacteristics _characteristics;
-        public override void Interact()
-        {
-            _characteristics.AddHealth(health);
-            Destroy(this.gameObject);
-        }
-
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
+            {
                 _characteristics = other.GetComponent<PlayerCharacteristics>();
+                _characteristics.AddHealth(hp);
+            }
         }
     }
 }

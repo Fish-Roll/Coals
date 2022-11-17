@@ -11,6 +11,7 @@ namespace Player.States
             _ctx.Animator.SetBool(_ctx.WalkHash, false);
             _ctx.Animator.SetBool(_ctx.DodgeHash, false);
             _ctx.Animator.SetBool(_ctx.InteractHash, false);
+            _ctx.Animator.SetBool(_ctx.DeathHash, false);
         }
 
         public override void ExitState()
@@ -20,7 +21,9 @@ namespace Player.States
 
         public override void CheckSwitchState()
         {
-            if(_ctx.InputSystem.IsWalking)
+            if(_ctx.InputSystem.IsDead)
+                SwitchState(_playerStateFactory.Death());
+            else if(_ctx.InputSystem.IsWalking)
                 SwitchState(_playerStateFactory.Walk());
             else if(_ctx.InputSystem.IsInteracting && _ctx.InputSystem.CanInteract)
                 SwitchState(_playerStateFactory.Interact());

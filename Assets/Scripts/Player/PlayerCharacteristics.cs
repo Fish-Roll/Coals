@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Player
 {
@@ -14,13 +15,11 @@ namespace Player
             get;
             private set;
         }
-
-        public PlayerCharacteristics(float maxHealth, float health)
+        private PlayerStateMachine _ctx;
+        private void Awake()
         {
-            MaxHealth = maxHealth;
-            Health = health;
+            _ctx = GetComponent<PlayerStateMachine>();
         }
-
         public void AddMaxHealth(float add)
         {
             if (add < 0 && Mathf.Abs(add) > MaxHealth){
@@ -38,6 +37,10 @@ namespace Player
                 Health = MaxHealth;
             else
                 Health += add;
+            if (Health == 0)
+                _ctx.InputSystem.IsDead = true;
+            else
+                _ctx.InputSystem.IsDead = false;
         }
     }
 }

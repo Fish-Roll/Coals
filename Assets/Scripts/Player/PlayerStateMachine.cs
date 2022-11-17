@@ -16,6 +16,7 @@ namespace Player
         [field: SerializeField] public Transform PlayerToRotate { get; set; }
         [SerializeField] private GameObject objectToRotation;
         [SerializeField] private float mouseSensitivity;
+        public PlayerCharacteristics Characteristics { get; set; }
         public PlayerBaseState CurrentState { get; set; }
         public PlayerStateFactory PlayerStateFactory { get; set; }
         public Vector3 MoveDirection { get; set; }
