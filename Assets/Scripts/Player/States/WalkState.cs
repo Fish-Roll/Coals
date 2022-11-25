@@ -29,6 +29,8 @@ namespace Player.States
                 SwitchState(_playerStateFactory.Interact());
             else if(!_ctx.InputSystem.IsWalking)
                 SwitchState(_playerStateFactory.Idle());
+            else if(_ctx.InputSystem.IsAiming && _ctx.InputSystem.IsAttacking)
+                SwitchState(_playerStateFactory.MoveAttack());
             else if(_ctx.InputSystem.IsRunning)
                 SwitchState(_playerStateFactory.Run());
         }
