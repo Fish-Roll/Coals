@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 
 namespace Player.States
@@ -23,8 +24,12 @@ namespace Player.States
 
         public override void CheckSwitchState()
         {
-            if(_ctx.InputSystem.IsWalking && !_ctx.InputSystem.IsDodging)
+            if(_ctx.InputSystem.IsAiming && _ctx.InputSystem.IsAttacking && _ctx.InputSystem.IsWalking && !_ctx.InputSystem.IsDodging)
+                SwitchState(_playerStateFactory.MoveAttack());
+            else if(_ctx.InputSystem.IsWalking && !_ctx.InputSystem.IsDodging)
                 SwitchState(_playerStateFactory.Walk());
+            else if(_ctx.InputSystem.IsAiming && _ctx.InputSystem.IsAttacking)
+                SwitchState(_playerStateFactory.Attack());
             else if(!_ctx.InputSystem.IsWalking && !_ctx.InputSystem.IsDodging)
                 SwitchState(_playerStateFactory.Idle());
         }

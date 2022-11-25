@@ -41,6 +41,11 @@ namespace Player
         {
             return new AttackState(_ctx, this);
         }
+
+        public PlayerBaseState MoveAttack()
+        {
+            return new MoveAttackState(_ctx, this);
+        }
         public PlayerBaseState Death()
         {
             return new DeathState(_ctx, this);

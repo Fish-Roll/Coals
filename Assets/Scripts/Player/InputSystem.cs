@@ -12,9 +12,8 @@ namespace Player
         [SerializeField] private LayerMask layerMask;
         private PlayerInput _playerInput;
         private Vector2 _readMoveDirection;
-        private Camera _camera;
-        public Vector2 _look;
-        public Vector3 _inputMoveDirection;
+        public Vector3 inputMoveDirection;
+        public Vector2 look;
         public InteractableObject Interact { get; set; }
         [field: SerializeField] public bool IsDead { get; set; }
         [field: SerializeField] public bool IsWalking { get; set; }
@@ -24,10 +23,6 @@ namespace Player
         [field: SerializeField] public bool CanInteract { get; set; }
         [field: SerializeField] public bool IsAiming { get; set; }
         [field: SerializeField] public bool IsAttacking { get; set; }
-        private void Awake()
-        {
-            _camera = Camera.main;
-        }
         private void OnEnable()
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -80,14 +75,14 @@ namespace Player
         private void OnWalk(InputAction.CallbackContext context) {
             _readMoveDirection = context.ReadValue<Vector2>();
             IsWalking = _readMoveDirection.x != 0 || _readMoveDirection.y != 0;
-            _inputMoveDirection.x = _readMoveDirection.x;
-            _inputMoveDirection.y = 0;
-            _inputMoveDirection.z = _readMoveDirection.y;
+            inputMoveDirection.x = _readMoveDirection.x;
+            inputMoveDirection.y = 0;
+            inputMoveDirection.z = _readMoveDirection.y;
         }
         private void OnRun(InputAction.CallbackContext context) => IsRunning = context.ReadValueAsButton();
         private void OnDodge(InputAction.CallbackContext context) => IsDodging = context.ReadValueAsButton();
         private void OnInteract(InputAction.CallbackContext context) => IsInteracting = context.ReadValueAsButton();
-        private void OnLook(InputAction.CallbackContext context) => _look = context.ReadValue<Vector2>();
+        private void OnLook(InputAction.CallbackContext context) => look = context.ReadValue<Vector2>();
         private void OnTriggerStay(Collider other)
         {
             if (other.CompareTag("Item"))
@@ -104,23 +99,5 @@ namespace Player
                 Interact = null;
             }
         }
-        public Vector3 ConvertToCameraMovement(Vector3 moveDirection)
-        {
-            float yMoveValue = moveDirection.y;
-    
-            Vector3 cameraForward = _camera.transform.forward;
-            Vector3 cameraRight = _camera.transform.right;
-        
-            cameraForward.y = 0;
-            cameraRight.y = 0;
-    
-            Vector3 CameraForwardZ = _inputMoveDirection.z * cameraForward.normalized;
-            Vector3 CameraForwardX = _inputMoveDirection.x * cameraRight.normalized;
-        
-            Vector3 resultMove = CameraForwardX + CameraForwardZ;
-            resultMove.y = yMoveValue;
-            return resultMove;
-        }
-    
     }
 }

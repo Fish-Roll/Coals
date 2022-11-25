@@ -1,12 +1,17 @@
+using System;
+using Attack;
 using Player.States;
 using UnityEngine;
 
 namespace Player
 {
-    [RequireComponent(typeof(InputSystem))]
+    [RequireComponent(typeof(InputSystem),
+        typeof(ThirdPersonCamera))]
     public class PlayerStateMachine : MonoBehaviour
     {
         public InputSystem InputSystem { get; private set; }
+
+        public ThirdPersonCamera PlayerCamera { get; private set; }
         public Rigidbody Rb { get; private set; }
         [field: SerializeField] public float WalkSpeed { get; set; }
         [field: SerializeField] public float RunSpeed { get; set; }
@@ -15,8 +20,6 @@ namespace Player
         [field: SerializeField] public Animator Animator { get; private set; }
         [field: SerializeField] public Transform PlayerToRotate { get; set; }
         [field: SerializeField] public BaseAttack[] Attacks { get; set; }
-        [SerializeField] private GameObject objectToRotation;
-        [SerializeField] private float mouseSensitivity;
         public Transform[] spawnAttackPosition;
         public PlayerCharacteristics Characteristics { get; set; }
         public PlayerBaseState CurrentState { get; set; }
@@ -31,6 +34,7 @@ namespace Player
         {
             Rb = GetComponent<Rigidbody>();
             InputSystem = GetComponent<InputSystem>();
+            PlayerCamera = GetComponent<ThirdPersonCamera>();
             Characteristics = GetComponent<PlayerCharacteristics>();
             Rb.freezeRotation = true;
             WalkHash = Animator.StringToHash("isWalk");
@@ -42,42 +46,28 @@ namespace Player
             CurrentState = PlayerStateFactory.Grounded();
             CurrentState.EnterState();
         }
+        private void LateUpdate()
+        {
+            if (!InputSystem.IsAiming)
+            {
+                transform.rotation = PlayerCamera.RotateCamera(InputSystem.look, transform.rotation, InputSystem.IsWalking);
+                RotatePlayer();
+            }
+            else
+            {
+                transform.rotation = PlayerCamera.RotateCamera(InputSystem.look, transform.rotation);
+            }
+        }
         private void Update()
         {
-            RotateCamera();
-            RotatePlayer();
-            MoveDirection = InputSystem._inputMoveDirection;
-            MoveDirection = InputSystem.ConvertToCameraMovement(MoveDirection);
+            MoveDirection = InputSystem.inputMoveDirection;
+            MoveDirection = PlayerCamera.ConvertToCameraMovement(MoveDirection, InputSystem.inputMoveDirection);
         }
         private void FixedUpdate()
         {
             if (Characteristics.Health == 0)
                 InputSystem.IsDead = true;
             CurrentState.Updates();
-        }
-        public void RotateCamera()
-        {
-            objectToRotation.transform.rotation *= Quaternion.AngleAxis(InputSystem._look.x * mouseSensitivity * Time.deltaTime, Vector3.up);
-            objectToRotation.transform.rotation *= Quaternion.AngleAxis(-InputSystem._look.y * mouseSensitivity* Time.deltaTime, Vector3.right);
-
-            Vector3 angles = objectToRotation.transform.localEulerAngles;
-            angles.z = 0;
-            float angle = objectToRotation.transform.localEulerAngles.x;
-            if (angle > 180 && angle < 340)
-            {
-                angles.x = 340;
-            }
-            else if(angle < 180 && angle > 40)
-            {
-                angles.x = 40;
-            }
-            objectToRotation.transform.localEulerAngles = angles;
-
-            if (InputSystem.IsWalking)
-            {
-                transform.rotation = Quaternion.Euler(0, objectToRotation.transform.rotation.eulerAngles.y, 0);
-                objectToRotation.transform.localEulerAngles = new Vector3(angles.x, 0, 0);
-            }
         }
         private void RotatePlayer()
         {
