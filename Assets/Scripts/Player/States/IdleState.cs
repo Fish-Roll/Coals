@@ -23,6 +23,8 @@ namespace Player.States
         {
             if(_ctx.InputSystem.IsDead)
                 SwitchState(_playerStateFactory.Death());
+            else if(_ctx.InputSystem.IsAiming && _ctx.InputSystem.IsAttacking)
+                SwitchState(_playerStateFactory.Attack());
             else if(_ctx.InputSystem.IsWalking)
                 SwitchState(_playerStateFactory.Walk());
             else if(_ctx.InputSystem.IsInteracting && _ctx.InputSystem.CanInteract)

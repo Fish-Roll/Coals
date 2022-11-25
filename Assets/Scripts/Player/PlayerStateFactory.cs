@@ -37,6 +37,10 @@ namespace Player
             return new InteractState(_ctx, this);
         }
 
+        public PlayerBaseState Attack()
+        {
+            return new AttackState(_ctx, this);
+        }
         public PlayerBaseState Death()
         {
             return new DeathState(_ctx, this);

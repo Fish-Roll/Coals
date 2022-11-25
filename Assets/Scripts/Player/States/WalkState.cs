@@ -25,12 +25,12 @@ namespace Player.States
                 SwitchState(_playerStateFactory.Death());
             else if(_ctx.InputSystem.IsDodging)
                 SwitchState(_playerStateFactory.Dodge());
-            else if(_ctx.InputSystem.IsRunning)
-                SwitchState(_playerStateFactory.Run());
             else if(_ctx.InputSystem.CanInteract && _ctx.InputSystem.IsInteracting)
                 SwitchState(_playerStateFactory.Interact());
             else if(!_ctx.InputSystem.IsWalking)
                 SwitchState(_playerStateFactory.Idle());
+            else if(_ctx.InputSystem.IsRunning)
+                SwitchState(_playerStateFactory.Run());
         }
 
         public override void Update()

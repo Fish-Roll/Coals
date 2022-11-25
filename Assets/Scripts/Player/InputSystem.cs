@@ -1,3 +1,4 @@
+using Cinemachine;
 using InteractWithWorld;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -6,6 +7,9 @@ namespace Player
 {
     public class InputSystem : MonoBehaviour
     {
+        [SerializeField] private CinemachineVirtualCamera aimCamera;
+        [SerializeField] private GameObject aimPoint;
+        [SerializeField] private LayerMask layerMask;
         private PlayerInput _playerInput;
         private Vector2 _readMoveDirection;
         private Camera _camera;
@@ -18,19 +22,25 @@ namespace Player
         [field: SerializeField] public bool IsDodging { get; set; }
         [field: SerializeField] public bool IsInteracting { get; set; }
         [field: SerializeField] public bool CanInteract { get; set; }
-        
+        [field: SerializeField] public bool IsAiming { get; set; }
+        [field: SerializeField] public bool IsAttacking { get; set; }
         private void Awake()
         {
             _camera = Camera.main;
         }
         private void OnEnable()
         {
+            Cursor.lockState = CursorLockMode.Locked;
             if (_playerInput == null)
             {
                 _playerInput = new PlayerInput();
                 _playerInput.PlayerActionMap.Walk.performed += OnWalk;
                 _playerInput.PlayerActionMap.Run.performed += OnRun;
                 _playerInput.PlayerActionMap.Dodge.performed += OnDodge;
+                _playerInput.PlayerActionMap.Aim.performed += OnAim;
+                _playerInput.PlayerActionMap.Attack.performed += OnAttack;
+                _playerInput.PlayerActionMap.Attack.started += OnAttack;
+                _playerInput.PlayerActionMap.Attack.canceled += OnAttack;
                 _playerInput.PlayerActionMap.Interact.performed += OnInteract;
                 _playerInput.PlayerActionMap.Look.performed += OnLook;
                 _playerInput.PlayerActionMap.Look.canceled += OnLook;
@@ -39,6 +49,7 @@ namespace Player
         }
         private void OnDisable()
         {
+            Cursor.lockState = CursorLockMode.None;
             _playerInput.Disable();
             // if (!IsDead)
             // {
@@ -48,6 +59,23 @@ namespace Player
             //     _playerInput.PlayerActionMap.Interact.performed -= OnInteract;
             //     _playerInput.PlayerActionMap.Look.performed -= OnLook;
             // }
+        }
+
+        public Vector3 GetMouseHitVector()
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+            Physics.Raycast(ray, out RaycastHit hit, layerMask);
+            return hit.point;
+        }
+        private void OnAim(InputAction.CallbackContext context)
+        {
+            IsAiming = !IsAiming;
+            aimPoint.SetActive(IsAiming);
+            aimCamera.enabled = IsAiming;
+        }
+        private void OnAttack(InputAction.CallbackContext context)
+        {
+            IsAttacking = context.ReadValueAsButton();
         }
         private void OnWalk(InputAction.CallbackContext context) {
             _readMoveDirection = context.ReadValue<Vector2>();

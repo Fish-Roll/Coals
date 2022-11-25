@@ -14,8 +14,10 @@ namespace Player
         [field: SerializeField] public float DodgeDistance { get; set; }
         [field: SerializeField] public Animator Animator { get; private set; }
         [field: SerializeField] public Transform PlayerToRotate { get; set; }
+        [field: SerializeField] public BaseAttack[] Attacks { get; set; }
         [SerializeField] private GameObject objectToRotation;
         [SerializeField] private float mouseSensitivity;
+        public Transform[] spawnAttackPosition;
         public PlayerCharacteristics Characteristics { get; set; }
         public PlayerBaseState CurrentState { get; set; }
         public PlayerStateFactory PlayerStateFactory { get; set; }
@@ -30,7 +32,6 @@ namespace Player
             Rb = GetComponent<Rigidbody>();
             InputSystem = GetComponent<InputSystem>();
             Characteristics = GetComponent<PlayerCharacteristics>();
-            
             Rb.freezeRotation = true;
             WalkHash = Animator.StringToHash("isWalk");
             RunHash = Animator.StringToHash("isRun");
@@ -41,7 +42,6 @@ namespace Player
             CurrentState = PlayerStateFactory.Grounded();
             CurrentState.EnterState();
         }
-
         private void Update()
         {
             RotateCamera();
