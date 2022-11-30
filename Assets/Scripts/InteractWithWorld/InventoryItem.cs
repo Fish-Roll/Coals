@@ -1,6 +1,6 @@
 ﻿namespace InteractWithWorld
 {
-    public class InventoryItem : InteractableObject
+    public class InventoryItem : Interactable
     {
         public override void Interact()
         {

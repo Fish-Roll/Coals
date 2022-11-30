@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace InteractWithWorld
 {
-    public abstract class InteractableObject : MonoBehaviour
+    public abstract class Interactable : MonoBehaviour
     {
         public abstract void Interact();
     }

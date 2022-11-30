@@ -14,7 +14,7 @@ namespace Player
         private Vector2 _readMoveDirection;
         public Vector3 inputMoveDirection;
         public Vector2 look;
-        public InteractableObject Interact { get; set; }
+        public Interactable Interact { get; set; }
         [field: SerializeField] public bool IsDead { get; set; }
         [field: SerializeField] public bool IsWalking { get; set; }
         [field: SerializeField] public bool IsRunning { get; set; }
@@ -85,19 +85,16 @@ namespace Player
         private void OnLook(InputAction.CallbackContext context) => look = context.ReadValue<Vector2>();
         private void OnTriggerStay(Collider other)
         {
-            if (other.CompareTag("Item"))
+            if (other.CompareTag("Item") || other.CompareTag("SpeakingNPC"))
             {
                 CanInteract = true;
-                Interact = other.GetComponent<InteractableObject>();
+                Interact = other.GetComponent<Interactable>();
             }
         }
         private void OnTriggerExit(Collider other)
         {
-            if (other.gameObject.CompareTag("Item"))
-            {
-                CanInteract = false;
-                Interact = null;
-            }
+            CanInteract = false;
+            Interact = null;
         }
     }
 }

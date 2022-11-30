@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace InteractWithWorld
 {
-    public class HealItem : InteractableObject
+    public class HealItem : Interactable
     {
         [SerializeField] private float health;
         private PlayerCharacteristics _characteristics;
