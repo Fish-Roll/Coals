@@ -16,6 +16,7 @@ namespace Player
         [field: SerializeField] public float RunSpeed { get; set; }
         [field: SerializeField] public float RotationSpeed { get; set; }
         [field: SerializeField] public float DodgeDistance { get; set; }
+        [field: SerializeField] public float JumpForce { get; set; }
         [field: SerializeField] public Animator Animator { get; private set; }
         [field: SerializeField] public Transform PlayerToRotate { get; set; }
         [field: SerializeField] public BaseAttack[] Attacks { get; set; }
@@ -64,6 +65,7 @@ namespace Player
         }
         private void FixedUpdate()
         {
+            InputSystem.IsGrounded = InputSystem.CheckIsGround();
             if (Characteristics.Health == 0)
                 InputSystem.IsDead = true;
             CurrentState.Updates();
@@ -80,6 +82,12 @@ namespace Player
                 Quaternion rotate = Quaternion.LookRotation(positionToLookAt);
                 PlayerToRotate.rotation = Quaternion.Slerp(curRotation, rotate, RotationSpeed * Time.deltaTime);
             }
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, transform.localScale.x/2);
         }
     }
 }

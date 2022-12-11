@@ -28,7 +28,10 @@ namespace Player.States
         {
             ExitState();
             newState.EnterState();
-            _ctx.CurrentState = newState;
+            if(IsRootState)
+                _ctx.CurrentState = newState;
+            else if(_superState != null)
+                _superState.SetSubState(newState);
         }
         
         public void SetSubState(PlayerBaseState newSubState)

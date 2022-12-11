@@ -10,6 +10,7 @@ namespace Player
         [SerializeField] private CinemachineVirtualCamera aimCamera;
         [SerializeField] private GameObject aimPoint;
         [SerializeField] private LayerMask layerMask;
+        [SerializeField] private LayerMask ground;
         private PlayerInput _playerInput;
         private Vector2 _readMoveDirection;
         public Vector3 inputMoveDirection;
@@ -23,6 +24,8 @@ namespace Player
         [field: SerializeField] public bool CanInteract { get; set; }
         [field: SerializeField] public bool IsAiming { get; set; }
         [field: SerializeField] public bool IsAttacking { get; set; }
+        [field: SerializeField] public bool IsJumping { get; set; }
+        [field: SerializeField] public bool IsGrounded { get; set; }
         private void OnEnable()
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -39,6 +42,9 @@ namespace Player
                 _playerInput.PlayerActionMap.Interact.performed += OnInteract;
                 _playerInput.PlayerActionMap.Look.performed += OnLook;
                 _playerInput.PlayerActionMap.Look.canceled += OnLook;
+                _playerInput.PlayerActionMap.Jump.started += OnJump;
+                _playerInput.PlayerActionMap.Jump.performed += OnJump;
+                _playerInput.PlayerActionMap.Jump.canceled += OnJump;
             }
             _playerInput.Enable();
         }
@@ -62,6 +68,11 @@ namespace Player
             Physics.Raycast(ray, out RaycastHit hit, layerMask);
             return hit.point;
         }
+        public bool CheckIsGround()
+        {
+            var colliders = Physics.OverlapSphere(transform.position, transform.localScale.x / 2, ground);
+            return colliders.Length != 0;
+        }
         private void OnAim(InputAction.CallbackContext context)
         {
             IsAiming = !IsAiming;
@@ -83,6 +94,7 @@ namespace Player
         private void OnDodge(InputAction.CallbackContext context) => IsDodging = context.ReadValueAsButton();
         private void OnInteract(InputAction.CallbackContext context) => IsInteracting = context.ReadValueAsButton();
         private void OnLook(InputAction.CallbackContext context) => look = context.ReadValue<Vector2>();
+        private void OnJump(InputAction.CallbackContext context) => IsJumping = context.ReadValueAsButton();
         private void OnTriggerStay(Collider other)
         {
             if (other.CompareTag("Item") || other.CompareTag("SpeakingNPC"))
