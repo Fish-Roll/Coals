@@ -8,5 +8,6 @@ namespace Dialogue
         public string playerName;
         
         [TextArea(3,10)] public string[] sentences;
+        [TextArea(3, 10)] public string[] sentencesAfterQuest;
     }
 }

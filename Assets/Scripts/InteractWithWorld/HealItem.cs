@@ -10,7 +10,7 @@ namespace InteractWithWorld
         public override void Interact()
         {
             _characteristics.Heal(health);
-            Destroy(this.gameObject);
+            Destroy(this.gameObject, 1);
         }
 
         private void OnTriggerEnter(Collider other)

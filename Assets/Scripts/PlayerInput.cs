@@ -98,6 +98,24 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenCloseInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""04e9b387-91ea-4e1f-ad39-c530e9ff9a57"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""UseHeal"",
+                    ""type"": ""Button"",
+                    ""id"": ""6cffd15a-052e-4c79-a5fc-f1fa9f935bfa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -202,6 +220,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
+                    ""id"": ""2158d947-afbc-4c3a-9ea0-2e13bd6da052"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
                     ""id"": ""c912dfb7-3b5f-41ac-86dc-2e2d8be734d0"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
@@ -224,12 +253,23 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""54013620-b56b-41d3-9030-174a7571ff1d"",
-                    ""path"": ""<Keyboard>/space"",
+                    ""id"": ""2906beaf-37c6-4e6c-b7de-d36b2e9f1139"",
+                    ""path"": ""<Keyboard>/i"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Jump"",
+                    ""action"": ""OpenCloseInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""16d9608c-21f6-433c-b0c3-fc7a7abdbda8"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""UseHeal"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -248,6 +288,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         m_PlayerActionMap_Aim = m_PlayerActionMap.FindAction("Aim", throwIfNotFound: true);
         m_PlayerActionMap_Attack = m_PlayerActionMap.FindAction("Attack", throwIfNotFound: true);
         m_PlayerActionMap_Jump = m_PlayerActionMap.FindAction("Jump", throwIfNotFound: true);
+        m_PlayerActionMap_OpenCloseInventory = m_PlayerActionMap.FindAction("OpenCloseInventory", throwIfNotFound: true);
+        m_PlayerActionMap_UseHeal = m_PlayerActionMap.FindAction("UseHeal", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -315,6 +357,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerActionMap_Aim;
     private readonly InputAction m_PlayerActionMap_Attack;
     private readonly InputAction m_PlayerActionMap_Jump;
+    private readonly InputAction m_PlayerActionMap_OpenCloseInventory;
+    private readonly InputAction m_PlayerActionMap_UseHeal;
     public struct PlayerActionMapActions
     {
         private @PlayerInput m_Wrapper;
@@ -327,6 +371,8 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         public InputAction @Aim => m_Wrapper.m_PlayerActionMap_Aim;
         public InputAction @Attack => m_Wrapper.m_PlayerActionMap_Attack;
         public InputAction @Jump => m_Wrapper.m_PlayerActionMap_Jump;
+        public InputAction @OpenCloseInventory => m_Wrapper.m_PlayerActionMap_OpenCloseInventory;
+        public InputAction @UseHeal => m_Wrapper.m_PlayerActionMap_UseHeal;
         public InputActionMap Get() { return m_Wrapper.m_PlayerActionMap; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -360,6 +406,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnJump;
+                @OpenCloseInventory.started -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnOpenCloseInventory;
+                @OpenCloseInventory.performed -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnOpenCloseInventory;
+                @OpenCloseInventory.canceled -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnOpenCloseInventory;
+                @UseHeal.started -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnUseHeal;
+                @UseHeal.performed -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnUseHeal;
+                @UseHeal.canceled -= m_Wrapper.m_PlayerActionMapActionsCallbackInterface.OnUseHeal;
             }
             m_Wrapper.m_PlayerActionMapActionsCallbackInterface = instance;
             if (instance != null)
@@ -388,6 +440,12 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
+                @OpenCloseInventory.started += instance.OnOpenCloseInventory;
+                @OpenCloseInventory.performed += instance.OnOpenCloseInventory;
+                @OpenCloseInventory.canceled += instance.OnOpenCloseInventory;
+                @UseHeal.started += instance.OnUseHeal;
+                @UseHeal.performed += instance.OnUseHeal;
+                @UseHeal.canceled += instance.OnUseHeal;
             }
         }
     }
@@ -402,5 +460,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         void OnAim(InputAction.CallbackContext context);
         void OnAttack(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnOpenCloseInventory(InputAction.CallbackContext context);
+        void OnUseHeal(InputAction.CallbackContext context);
     }
 }

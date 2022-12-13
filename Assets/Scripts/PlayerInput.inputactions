@@ -76,6 +76,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenCloseInventory",
+                    "type": "Button",
+                    "id": "04e9b387-91ea-4e1f-ad39-c530e9ff9a57",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "UseHeal",
+                    "type": "Button",
+                    "id": "6cffd15a-052e-4c79-a5fc-f1fa9f935bfa",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -180,6 +198,17 @@
                 },
                 {
                     "name": "",
+                    "id": "2158d947-afbc-4c3a-9ea0-2e13bd6da052",
+                    "path": "<Keyboard>/space",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "c912dfb7-3b5f-41ac-86dc-2e2d8be734d0",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
@@ -202,12 +231,23 @@
                 },
                 {
                     "name": "",
-                    "id": "54013620-b56b-41d3-9030-174a7571ff1d",
-                    "path": "<Keyboard>/space",
+                    "id": "2906beaf-37c6-4e6c-b7de-d36b2e9f1139",
+                    "path": "<Keyboard>/i",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Jump",
+                    "action": "OpenCloseInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "16d9608c-21f6-433c-b0c3-fc7a7abdbda8",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "UseHeal",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

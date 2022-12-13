@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Cinemachine;
 using InteractWithWorld;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Player
         [SerializeField] private GameObject aimPoint;
         [SerializeField] private LayerMask layerMask;
         [SerializeField] private LayerMask ground;
+
         private PlayerInput _playerInput;
         private Vector2 _readMoveDirection;
         public Vector3 inputMoveDirection;
@@ -26,6 +28,7 @@ namespace Player
         [field: SerializeField] public bool IsAttacking { get; set; }
         [field: SerializeField] public bool IsJumping { get; set; }
         [field: SerializeField] public bool IsGrounded { get; set; }
+
         private void OnEnable()
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -45,9 +48,12 @@ namespace Player
                 _playerInput.PlayerActionMap.Jump.started += OnJump;
                 _playerInput.PlayerActionMap.Jump.performed += OnJump;
                 _playerInput.PlayerActionMap.Jump.canceled += OnJump;
+                _playerInput.PlayerActionMap.UseHeal.performed += OnHealButton;
             }
+
             _playerInput.Enable();
         }
+
         private void OnDisable()
         {
             Cursor.lockState = CursorLockMode.None;
@@ -68,6 +74,7 @@ namespace Player
             Physics.Raycast(ray, out RaycastHit hit, layerMask);
             return hit.point;
         }
+
         public bool CheckIsGround()
         {
             var colliders = Physics.OverlapSphere(transform.position, transform.localScale.x / 2, ground);
@@ -78,6 +85,17 @@ namespace Player
             IsAiming = !IsAiming;
             aimPoint.SetActive(IsAiming);
             aimCamera.enabled = IsAiming;
+        }
+
+        private void OnHealButton(InputAction.CallbackContext context)
+        {
+            var inventory = Inventory.Inventory.GetInventory();
+            inventory.items.TryGetValue(3, out List<InventoryItem> value);
+            if (value?.Count > 0)
+            {
+                GetComponent<PlayerCharacteristics>().Heal(30);
+                inventory.RemoveItem(value[value.Count - 1]);
+            }
         }
         private void OnAttack(InputAction.CallbackContext context)
         {
@@ -98,6 +116,12 @@ namespace Player
         private void OnTriggerStay(Collider other)
         {
             if (other.CompareTag("Item") || other.CompareTag("SpeakingNPC"))
+            {
+                CanInteract = true;
+                Interact = other.GetComponent<Interactable>();
+            }
+
+            else if (other.CompareTag("Chest"))
             {
                 CanInteract = true;
                 Interact = other.GetComponent<Interactable>();
