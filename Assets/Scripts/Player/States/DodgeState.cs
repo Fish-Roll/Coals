@@ -12,7 +12,6 @@ namespace Player.States
 
         public override void EnterState()
         {
-            _ctx.Animator.SetBool(_ctx.DodgeHash, true);
             _ctx.Animator.SetBool(_ctx.WalkHash, false);
             Dodge();
         }

@@ -10,7 +10,6 @@ namespace Player.States
         {
             _ctx.Animator.SetBool(_ctx.WalkHash, true);
             _ctx.Animator.SetBool(_ctx.RunHash, false);
-            _ctx.Animator.SetBool(_ctx.DodgeHash, false);
             _ctx.Animator.SetBool(_ctx.InteractHash, false);
         }
 
@@ -27,6 +26,10 @@ namespace Player.States
                 SwitchState(_playerStateFactory.Dodge());
             else if(_ctx.InputSystem.CanInteract && _ctx.InputSystem.IsInteracting)
                 SwitchState(_playerStateFactory.Interact());
+            else if(_ctx.InputSystem.IsOpenChest && _ctx.InputSystem.CanOpenChest)
+                SwitchState(_playerStateFactory.OpenChest());
+            else if(_ctx.InputSystem.CanSpeak && _ctx.InputSystem.IsInteracting)
+                SwitchState(_playerStateFactory.Speak());
             else if(!_ctx.InputSystem.IsWalking)
                 SwitchState(_playerStateFactory.Idle());
             else if(_ctx.InputSystem.IsAiming && _ctx.InputSystem.IsAttacking)

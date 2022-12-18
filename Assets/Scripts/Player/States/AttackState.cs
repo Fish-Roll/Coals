@@ -10,7 +10,6 @@
         {
             _ctx.Animator.SetBool(_ctx.WalkHash, false);
             _ctx.Animator.SetBool(_ctx.RunHash, false);
-            _ctx.Animator.SetBool(_ctx.DodgeHash, false);
             _ctx.Animator.SetBool(_ctx.InteractHash, false);
         }
 

@@ -20,16 +20,24 @@ namespace Player
         [field: SerializeField] public Animator Animator { get; private set; }
         [field: SerializeField] public Transform PlayerToRotate { get; set; }
         [field: SerializeField] public BaseAttack[] Attacks { get; set; }
-        public Transform[] spawnAttackPosition;
+        [SerializeField] private float fallSpeed;
+
+        /// <summary>
+        /// Add this variables to the Manager
+        /// </summary>
+        [SerializeField] public Canvas HUD;
+        [SerializeField] public Canvas DeathScreen;
+        
+        [SerializeField] public Transform[] spawnAttackPosition;
         public PlayerCharacteristics Characteristics { get; set; }
         public PlayerBaseState CurrentState { get; set; }
         public PlayerStateFactory PlayerStateFactory { get; set; }
         public Vector3 MoveDirection { get; set; }
         public int WalkHash { get; private set; }
         public int RunHash { get; private set; }
-        public int DodgeHash { get; private set; }
         public int DeathHash { get; private set; }
         public int InteractHash { get; private set; }
+        public int OpenChestHash { get; private set; }
         private void Awake()
         {
             Rb = GetComponent<Rigidbody>();
@@ -39,9 +47,9 @@ namespace Player
             Rb.freezeRotation = true;
             WalkHash = Animator.StringToHash("isWalk");
             RunHash = Animator.StringToHash("isRun");
-            DodgeHash = Animator.StringToHash("isDodge");
             InteractHash = Animator.StringToHash("isInteract");
             DeathHash = Animator.StringToHash("isDeath");
+            OpenChestHash = Animator.StringToHash("isOpenChest");
             PlayerStateFactory = new PlayerStateFactory(this);
             CurrentState = PlayerStateFactory.Grounded();
             CurrentState.EnterState();
@@ -65,6 +73,7 @@ namespace Player
         }
         private void FixedUpdate()
         {
+            Rb.velocity = new Vector3(Rb.velocity.x, fallSpeed, Rb.velocity.z);
             InputSystem.IsGrounded = InputSystem.CheckIsGround();
             if (Characteristics.Health == 0)
                 InputSystem.IsDead = true;

@@ -29,13 +29,17 @@ namespace QuestSystem.Quests
         [SerializeField] private Text timerUI;
         [SerializeField] private Text questNameText;
         [SerializeField] public List<GameObject> papers = new List<GameObject>();
-        [SerializeField] private List<Transform> spawnPoints = new List<Transform>();
+        [SerializeField] private List<Transform> spawnPoints;
         [SerializeField] private GameObject paperPrefab;
+        [SerializeField] private string goToSkeletonQuest;
+        [SerializeField] private Text questFailed;
+        [SerializeField] private Canvas failedUI;
         public override void Activate()
         {
             SpawnObjects();
             isTaken = true;
             isFailed = false;
+            questNameText.text = questName;
             questNameText.enabled = true;
             timerUI.enabled = true;
             StartCoroutine(nameof(Timer));
@@ -53,7 +57,6 @@ namespace QuestSystem.Quests
         }
         private IEnumerator Timer()
         {
-            Debug.Log(papers.Count);
             float newTimer = timer;
             while (newTimer >= 0)
             {
@@ -75,7 +78,8 @@ namespace QuestSystem.Quests
             isTaken = false;
             isFinished = true;
             isFailed = false;
-            timerUI.text = "Success";
+            timerUI.enabled = false;
+            questNameText.text = goToSkeletonQuest;
         }
 
         public override void Failed()
@@ -84,6 +88,8 @@ namespace QuestSystem.Quests
             isFinished = false;
             isFailed = true;
             timerUI.text = "Quest failed";
+            questNameText.text = goToSkeletonQuest;
         }
+
     }
 }

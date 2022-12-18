@@ -12,8 +12,8 @@ namespace Inventory
         [SerializeField] private Text potionText;
         [SerializeField] private Text paperText;
         [SerializeField] private Text keyText;
-        private string _potionTextTempl = "/5";
-        private string _paperTextTempl = "/7";
+        private string _potionTextTempl = "/1";
+        private string _paperTextTempl = "/3";
         private string _keyTextTempl = "/1";
         private static GameObject _gameObject;
         public readonly Dictionary<int, List<InventoryItem>> items = new Dictionary<int, List<InventoryItem>>();

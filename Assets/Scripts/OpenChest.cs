@@ -18,16 +18,16 @@ public class OpenChest : Interactable
         Quaternion startRotation = cover.rotation;
         float duration = 1f;
         float t = 0;
-
+        
         while (t < 1f)
         {
             t = Mathf.Min(1f, t + Time.deltaTime/duration);
             Vector3 newEulerOffset = Vector3.left * (openAngle * t);      
-            // global z rotation
             cover.rotation = Quaternion.Euler(newEulerOffset) * startRotation;
-            // local z rotation
-            // transform.rotation = startRotation * Quaternion.Euler(newEulerOffset);
             yield return null;
         }
+
+        Inventory.Inventory.GetInventory().AddItem(new InventoryItem { id = 3 });
+        tag = "Untagged";
     }
 }

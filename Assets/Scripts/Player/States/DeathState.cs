@@ -18,6 +18,9 @@
             _ctx.InputSystem.IsInteracting = false;
             _ctx.InputSystem.IsRunning = false;
             _ctx.InputSystem.IsWalking = false;
+            
+            _ctx.HUD.enabled = false;
+            _ctx.DeathScreen.enabled = true;
         }
 
         public override void ExitState()

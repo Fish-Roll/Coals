@@ -4,7 +4,7 @@ namespace QuestSystem
 {
     public abstract class BaseQuest : MonoBehaviour
     {
-        [SerializeField] private string questName;
+        [SerializeField] protected string questName;
         public bool isTaken;
         public bool isFinished;
         public bool isFailed;

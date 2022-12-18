@@ -41,6 +41,16 @@ namespace Player
             return new InteractState(_ctx, this);
         }
 
+        public PlayerBaseState OpenChest()
+        {
+            return new OpenChestState(_ctx, this);
+        }
+
+        public PlayerBaseState Speak()
+        {
+            return new SpeakState(_ctx, this);
+        }
+        
         public PlayerBaseState Attack()
         {
             return new AttackState(_ctx, this);

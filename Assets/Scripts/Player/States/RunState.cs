@@ -13,7 +13,6 @@ namespace Player.States
         {
             _ctx.Animator.SetBool(_ctx.RunHash, true);
             _ctx.Animator.SetBool(_ctx.WalkHash, true);
-            _ctx.Animator.SetBool(_ctx.DodgeHash, false);
         }
 
         public override void ExitState()

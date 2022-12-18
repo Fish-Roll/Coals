@@ -28,7 +28,9 @@ namespace Player
         [field: SerializeField] public bool IsAttacking { get; set; }
         [field: SerializeField] public bool IsJumping { get; set; }
         [field: SerializeField] public bool IsGrounded { get; set; }
-
+        [field: SerializeField] public bool IsOpenChest { get; set; }
+        [field: SerializeField] public bool CanOpenChest{ get; set; }
+        [field: SerializeField] public bool CanSpeak { get; set; }
         private void OnEnable()
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -49,6 +51,7 @@ namespace Player
                 _playerInput.PlayerActionMap.Jump.performed += OnJump;
                 _playerInput.PlayerActionMap.Jump.canceled += OnJump;
                 _playerInput.PlayerActionMap.UseHeal.performed += OnHealButton;
+                _playerInput.PlayerActionMap.OpenChest.performed += OnOpenChest;
             }
 
             _playerInput.Enable();
@@ -111,24 +114,25 @@ namespace Player
         private void OnRun(InputAction.CallbackContext context) => IsRunning = context.ReadValueAsButton();
         private void OnDodge(InputAction.CallbackContext context) => IsDodging = context.ReadValueAsButton();
         private void OnInteract(InputAction.CallbackContext context) => IsInteracting = context.ReadValueAsButton();
+        private void OnOpenChest(InputAction.CallbackContext context) => IsOpenChest = context.ReadValueAsButton();
         private void OnLook(InputAction.CallbackContext context) => look = context.ReadValue<Vector2>();
         private void OnJump(InputAction.CallbackContext context) => IsJumping = context.ReadValueAsButton();
+
         private void OnTriggerStay(Collider other)
         {
-            if (other.CompareTag("Item") || other.CompareTag("SpeakingNPC"))
-            {
+            if (other.CompareTag("Item"))
                 CanInteract = true;
-                Interact = other.GetComponent<Interactable>();
-            }
-
+            else if (other.CompareTag("SpeakingNPC"))
+                CanSpeak = true;
             else if (other.CompareTag("Chest"))
-            {
-                CanInteract = true;
-                Interact = other.GetComponent<Interactable>();
-            }
+                CanOpenChest = true;
+            Interact = other.GetComponent<Interactable>();
         }
+
         private void OnTriggerExit(Collider other)
         {
+            CanSpeak = false;
+            CanOpenChest = false;
             CanInteract = false;
             Interact = null;
         }
